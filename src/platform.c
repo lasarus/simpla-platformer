@@ -44,7 +44,7 @@ void draw_item(item_t * item, SDL_Surface * destination)
 int find_intersection_item(item_t item, SDL_Rect r)
 {
   if(item.x + 8 < r.x || item.x - 8 > r.x + r.w ||
-       item.y + 16 < r.y || item.y > r.y + r.h)
+       item.y < r.y || item.y - 16 > r.y + r.h)
     return 0;
   return 1;
 }

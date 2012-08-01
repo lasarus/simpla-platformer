@@ -16,6 +16,7 @@ player_t * new_player(double x, double y, Uint32 color)
   player->air = player->jump = 1;
 
   player->color = color;
+  player->attack = 0;
   
   return player;
 }
@@ -29,6 +30,8 @@ void update_player(player_t * player, platform_t * platform, Uint8 * keystate, S
   player->y += player->yv;
 
   player->xv = player->xv / 1.01;
+  if(player->xv < 1)
+    player->attack = 0;
 
   player->yv -= .005;
   if(player->y < 0)
@@ -41,19 +44,46 @@ void update_player(player_t * player, platform_t * platform, Uint8 * keystate, S
     }
 
   if(keystate[SDLK_a])
-    player->xv = -speed * (keystate[SDLK_LSHIFT] ? 2 : 1) * (keystate[SDLK_LCTRL] ? .5 : 1);
+    {
+      player->xv = -speed;
+      if(keystate[SDLK_LSHIFT])
+	{
+	  player->xv *= 2;
+	  player->attack = 1;
+	}
+      if(keystate[SDLK_LCTRL])
+	{
+	  player->xv = .5;
+	}
+    }
   else if(keystate[SDLK_d])
-    player->xv = speed * (keystate[SDLK_LSHIFT] ? 2 : 1) * (keystate[SDLK_LCTRL] ? .5 : 1);
+    {
+      player->xv = speed;
+      if(keystate[SDLK_LSHIFT])
+	{
+	  player->xv *= 2;
+	  player->attack = 1;
+	}
+      if(keystate[SDLK_LCTRL])
+	{
+	  player->xv = .5;
+	}
+    }
 
   if(keystate[SDLK_s] && player->air)
-    player->yv = -4;
-  
+    {
+      player->yv = -4;
+      player->attack = 1;
+    }
+
   if(event != NULL &&
      (*event).type == SDL_KEYDOWN)
     {
       if((*event).key.keysym.sym == SDLK_w && player->jump < 3)
 	{
 	  player->yv = 1;
+	  if(player->jump == 0 && keystate[SDLK_LSHIFT])
+	    player->yv = 1.5;
 	  player->jump++;
 	  player->air = 1;
 	}
@@ -69,11 +99,10 @@ void update_player(player_t * player, platform_t * platform, Uint8 * keystate, S
       if(find_intersection_item(platform->items[i], cr))
 	{
 	  
-	  if(fabs(player->xv) > .75 || fabs(player->yv) > .75)
+	  if(player->attack)
 	    {
 	      platform->items[i].id = 0;
 	    }
-	  
 	  else
 	    {
 	      platform->items[i].xv = player->xv * 1.1;

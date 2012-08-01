@@ -4,7 +4,7 @@
 typedef struct player
 {
   double x, y, xv, yv;
-  int jump, air;
+  int jump, air, attack;
 
   Uint32 color;
 } player_t;
