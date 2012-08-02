@@ -40,8 +40,9 @@ int main(int arg, char ** argv)
   player = new_player(s_w / 2, s_h, 0xFFFFFF);
   platform = new_platform(100);
 
-  add_item(platform, new_item(1, s_w / 3, s_h - 20, 0xFF0000));
-  add_item(platform, new_item(1, (s_w * 2) / 3, s_h - 20, 0xFF));
+  add_item(platform, new_item(ID_HEAL, s_w / 4, s_h - 20, 0xFF0000));
+  //add_item(platform, new_item(ID_SUPERHEAL, (s_w * 2) / 4, s_h - 20, 0xFF0000));
+  add_item(platform, new_item(ID_ARMOUR, (s_w * 3) / 4, s_h - 20, 0xFF));
   
   while(!quit)
     {

@@ -3,7 +3,7 @@
 
 #include "platform.h"
 
-item_t new_item(int id, double x, double y, Uint32 color)
+item_t new_item(item_id_t id, double x, double y, Uint32 color)
 {
   item_t item;
 
@@ -87,7 +87,7 @@ void update_platform(platform_t * platform)
 
   for(i = 0; i < platform->itemc; i++)
     {
-      if(platform->items[i].id != 0)
+      if(platform->items[i].id != ID_NULL)
 	{
 	  update_item(&(platform->items[i]));
 	}
@@ -100,7 +100,7 @@ void draw_platform(platform_t * platform, SDL_Surface * destination)
 
   for(i = 0; i < platform->itemc; i++)
     {
-      if(platform->items[i].id != 0)
+      if(platform->items[i].id != ID_NULL)
 	{
 	  draw_item(&(platform->items[i]), destination);
 	}

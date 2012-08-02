@@ -7,6 +7,9 @@ typedef struct player
   int jump, air, attack;
 
   Uint32 color;
+
+  double health, maxhealth;
+  double armour;
 } player_t;
 
 player_t * new_player(double x, double y, Uint32 color);
